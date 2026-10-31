@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050304"><meta name="description" content="Много красивых слов для Елены — на языках всего мира.">
+<title>Для Елены ❤️</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#050304;overflow:hidden}
+body{font-family:Arial,Helvetica,sans-serif;color:#fff}
+main{position:relative;width:100%;height:100svh;min-height:420px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#210807 0%,#0d0506 36%,#050304 72%)}
+canvas{display:block;width:min(100vw,900px);height:min(94svh,900px);position:relative;z-index:1}
+.center-name{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-48%);font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,7vw,58px);font-weight:400;letter-spacing:.18em;padding-left:.18em;color:#fff0e9;text-shadow:0 0 8px #ff796a,0 0 24px #ff382b,0 0 55px #f22a25;opacity:0;animation:nameIn 1.8s 5.5s ease forwards;white-space:nowrap;pointer-events:none}
+.center-name:after{content:"";position:absolute;inset:-14px -24px;border-radius:50%;background:radial-gradient(ellipse,#ff39251c,transparent 70%);z-index:-1}
+.caption{position:absolute;z-index:2;bottom:max(20px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:#c86a5d;font-size:9px;letter-spacing:.42em;text-transform:uppercase;opacity:0;animation:captionIn 1.5s 7s forwards}
+@keyframes nameIn{to{opacity:1}}@keyframes captionIn{to{opacity:.52}}
+@media(max-width:520px){canvas{width:100vw;height:88svh}.caption{font-size:8px;letter-spacing:.32em}}
+@media(prefers-reduced-motion:reduce){.center-name,.caption{animation:none;opacity:1}}
+</style></head>
+<body><main>
+<canvas id="heart" aria-label="Сердце из красивых слов на разных языках для Елены"></canvas>
+<div class="center-name">ELENA</div><div class="caption">для тебя · с теплом</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('heart'),ctx=canvas.getContext('2d');
+const phrases=[
+'Ты прекрасна','Твоя улыбка','Нежность души','Ты особенная','Свет внутри тебя','Ты восхитительна','Красота в деталях','Ты достойна счастья','Твоё очарование','Ты вдохновляешь','Тепло твоего сердца','Оставайся собой',
+'You are beautiful','You are amazing','Beautiful soul','You are sunshine','Simply wonderful','One of a kind','Pure elegance','Endless charm','You are precious','Shine bright','So lovely','You make life brighter',
+'Tu es magnifique','Tu es merveilleuse','Belle âme','Mon rayon de soleil','Pleine de douceur','Tu es unique','Quelle beauté','Un vrai trésor',
+'Sei meravigliosa','Sei speciale','Anima bella','Dolcezza infinita','Sei splendida','Unica al mondo','Pura bellezza',
+'Eres preciosa','Eres maravillosa','Alma bonita','Eres única','Mucho encanto','Luz de mi vida','Qué bonita',
+'Du bist wunderschön','Du bist besonders','Wundervolle Seele','Einzigartig schön','Voller Zauber',
+'Você é maravilhosa','Você é especial','Alma linda','Muito encanto','Você é única',
+'Jesteś piękna','Jesteś wyjątkowa','Piękna dusza','Promieniejesz','Cudowna osoba',
+'Çok güzelsin','Çok özelsin','Harika bir ruh','Eşsiz güzellik','Gülüşün çok güzel',
+'Είσαι υπέροχη','Είσαι μοναδική','Όμορφη ψυχή','Λάμπεις πάντα',
+'あなたは素敵','あなたは美しい','特別な人','笑顔がすてき',
+'당신은 아름다워요','당신은 특별해요','아름다운 마음','빛나는 미소',
+'你很美','你很特别','美丽的灵魂','你的笑容很美',
+'أنتِ رائعة','أنتِ جميلة','روح جميلة','أنتِ مميزة',
+'Ты — маленькое чудо','С тобой светлее','Улыбайся чаще','Мир красивее с тобой','В тебе столько света','Твоя доброта бесценна','Ты словно весна','Неповторимая',
+'Ma belle','Mon trésor','Belle comme le jour','Un sourire magnifique',
+'Bella come un sogno','Tesoro prezioso','Luz e beleza','Doce encanto',
+'Kind heart','Lovely smile','Pure magic','A gentle soul','Born to shine','A little wonder',
+'Ты прекрасна во всём','Твоя искренность','Лёгкость и нежность','Удивительная девушка','Волшебство в глазах','Самая тёплая улыбка','Тонкая душевная красота','Ты заслуживаешь лучшего',
+'Sei un tesoro','Coração bonito','Du bist zauberhaft','You are one of a kind','Ты — вдохновение','Нежность и сила','Твоя магия','Сияй и улыбайся','Красивых тебе мгновений','Пусть сбываются мечты'
+];
+let rows=[],width=0,height=0,dpr=1,start=0,raf=0;
+const inside=(x,y)=>{const q=x*x+y*y-1;return q*q*q-x*x*y*y*y<=0};
+function build(){
+ const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;
+ dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ const size=Math.min(width*.88,height*.78),scale=size/2.25,cx=width/2,cy=height/2-4;
+ const font=Math.max(7.2,Math.min(12.5,size/47)),line=font*1.48;rows=[];
+ let idx=0;
+ for(let y=-1.12;y<=1.12;y+=line/scale){
+  let left=null,right=null;
+  for(let x=-1.28;x<=1.28;x+=.0045){if(inside(x,y)){if(left===null)left=x;right=x}}
+  if(left!==null&&right!==null){rows.push({x:cx+left*scale,y:cy+y*scale,w:(right-left)*scale,phrase:phrases[idx%phrases.length],index:idx});idx++}
+ }
+ start=performance.now();
+}
+function draw(now){
+ ctx.clearRect(0,0,width,height);
+ const progress=Math.min(1,(now-start)/6500),visible=Math.ceil(rows.length*(1-Math.pow(1-progress,1.35)));
+ const size=Math.min(width*.88,height*.78),font=Math.max(7.2,Math.min(12.5,size/47));
+ const colors=['#ff5949','#ff7660','#f43d36','#ff9277','#e93632','#ff624f','#d92f2c'];
+ rows.forEach((r,i)=>{
+  if(i>=visible)return;
+  ctx.save();ctx.globalAlpha=Math.min(1,(visible-i)/2.5)*.94;
+  ctx.font=(i%5===0?'700':'600')+' '+font+'px Arial, sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=colors[i%7];ctx.shadowBlur=4;ctx.fillStyle=colors[i%7];
+  const repeated=(r.phrase+'   ·   ').repeat(Math.ceil(r.w/(font*3))+2);
+  ctx.beginPath();ctx.rect(r.x,r.y-font*.72,r.w,font*1.45);ctx.clip();
+  ctx.fillText(repeated,r.x+r.w/2,r.y);ctx.restore();
+ });
+ if(progress>=1){ctx.save();ctx.globalAlpha=.07+Math.sin(now/850)*.025;ctx.fillStyle='#ff382c';ctx.shadowColor='#ff382c';ctx.shadowBlur=38;ctx.beginPath();ctx.arc(width/2,height/2,Math.min(width,height)*.16*(1+Math.sin(now/850)*.012),0,Math.PI*2);ctx.fill();ctx.restore()}
+ raf=requestAnimationFrame(draw);
+}
+function init(){if(raf)cancelAnimationFrame(raf);build();raf=requestAnimationFrame(draw)}
+if('ResizeObserver'in window)new ResizeObserver(init).observe(canvas);else window.addEventListener('resize',init);
+init();
+})();
+</script></body></html>
