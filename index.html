@@ -1,120 +1,78 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050304">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080307">
 <title>Для тебя, Леночка ♥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050304}
-body{color:#fff;font-family:Manrope,Arial,sans-serif}
-main{position:relative;width:100%;height:100svh;min-height:420px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#160609 0%,#0b0507 48%,#030203 100%)}
-canvas{display:block;width:min(100vw,900px);height:min(94svh,900px);position:relative;z-index:1}
-.center-name{position:absolute;z-index:2;left:50%;top:49%;transform:translate(-50%,-50%);font-family:'Marck Script','Brush Script MT',cursive;font-size:clamp(48px,12vw,92px);font-weight:400;white-space:nowrap;color:#fff0f1;text-shadow:0 0 9px #ff718b,0 0 24px #d9214d;opacity:0;animation:nameIn 1.5s 7s ease forwards;pointer-events:none}
-.caption{position:absolute;z-index:2;bottom:max(24px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:#bd6c7c;font-size:9px;letter-spacing:.38em;text-transform:uppercase;opacity:0;animation:captionIn 1.2s 8s ease forwards}
-@keyframes nameIn{to{opacity:1}}@keyframes captionIn{to{opacity:.55}}
-@media(max-width:520px){canvas{width:100vw;height:88svh}.caption{font-size:8px;letter-spacing:.28em}}
-@media(prefers-reduced-motion:reduce){.center-name,.caption{animation:none;opacity:1}}
-</style>
-</head>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080307}
+body{font-family:Manrope,Arial,sans-serif;color:#fff;overflow:hidden}
+main{height:100svh;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 43%,#2a0914 0%,#14060d 38%,#080307 74%)}
+main:before,main:after{content:"";position:absolute;width:70vmin;height:70vmin;border-radius:50%;filter:blur(90px);opacity:.16;z-index:-1;pointer-events:none}
+main:before{background:#e31d50;left:-30vmin;top:10%}main:after{background:#a10e38;right:-35vmin;bottom:-10%}
+.heart{width:min(96vw,760px);height:auto;max-height:78svh;overflow:visible;filter:drop-shadow(0 0 15px #e52a5638)}
+.heart-shape{fill:#260711;stroke:#f04b70;stroke-opacity:.12;stroke-width:2}
+.word-row{font-family:Manrope,Arial,sans-serif;font-size:13px;font-weight:800;letter-spacing:2.2px;fill:url(#letters);opacity:0;filter:url(#glow);animation:appear .7s calc(var(--i)*.105s + .25s) ease-out forwards}
+.word-row:nth-child(3n){font-size:12px;letter-spacing:2.8px}
+.word-row:nth-child(4n){font-size:14px;letter-spacing:1.8px}
+@keyframes appear{0%{opacity:0;filter:blur(4px)}100%{opacity:.96;filter:url(#glow)}}
+.signature{font-family:'Marck Script',cursive;font-size:clamp(46px,9vw,70px);line-height:1;color:#ffe8ed;text-shadow:0 0 12px #ff557c,0 0 32px #d91e50;margin-top:-3px;opacity:0;animation:signature 1.5s 5.2s ease forwards}
+.sub{font-size:9px;letter-spacing:.48em;text-transform:uppercase;color:#e99aaa;margin-top:5px;opacity:0;animation:sub 1.2s 5.8s ease forwards}
+.spark{position:absolute;color:#ff9aaf;opacity:0;animation:twinkle 3s ease-in-out infinite}
+.s1{top:17%;left:16%;font-size:17px}.s2{top:25%;right:15%;font-size:12px;animation-delay:1s}.s3{bottom:20%;left:21%;font-size:12px;animation-delay:1.7s}.s4{bottom:17%;right:19%;font-size:18px;animation-delay:.6s}
+@keyframes signature{to{opacity:1}}@keyframes sub{to{opacity:.7}}@keyframes twinkle{0%,100%{opacity:0;transform:scale(.6) rotate(0)}50%{opacity:.8;transform:scale(1.2) rotate(35deg)}}
+@media(max-width:520px){main{min-height:480px}.heart{width:100vw;max-height:72svh}.word-row{font-size:12px;letter-spacing:1.8px}.signature{margin-top:2px}.s1{left:7%}.s2{right:7%}}
+@media(prefers-reduced-motion:reduce){.word-row,.signature,.sub,.spark{animation:none;opacity:1}}
+</style></head>
 <body><main>
-<canvas id="heart" aria-label="Сердце, составленное из строк с красивыми словами"></canvas>
-<div class="center-name">Леночка</div>
-<div class="caption">для тебя</div>
-</main>
-<script>
-(()=>{
-'use strict';
-const canvas=document.getElementById('heart'),ctx=canvas.getContext('2d');
-const phrases=[
-'Ты прекрасна','Твоя улыбка','Нежность души','Ты особенная','Свет внутри тебя','Ты восхитительна','Красота в деталях','Ты достойна счастья','Твоё очарование','Ты вдохновляешь','Тепло твоего сердца','Оставайся собой',
-'You are beautiful','You are amazing','Beautiful soul','You are sunshine','Simply wonderful','One of a kind','Pure elegance','Endless charm','You are precious','Shine bright','So lovely','You make life brighter',
-'Tu es magnifique','Tu es merveilleuse','Belle âme','Mon rayon de soleil','Pleine de douceur','Tu es unique','Quelle beauté','Un vrai trésor',
-'Sei meravigliosa','Sei speciale','Anima bella','Dolcezza infinita','Sei splendida','Unica al mondo','Pura bellezza',
-'Eres preciosa','Eres maravillosa','Alma bonita','Eres única','Mucho encanto','Luz de mi vida','Qué bonita',
-'Du bist wunderschön','Du bist besonders','Wundervolle Seele','Einzigartig schön','Voller Zauber',
-'Você é maravilhosa','Você é especial','Alma linda','Muito encanto','Você é única',
-'Jesteś piękna','Jesteś wyjątkowa','Piękna dusza','Promieniejesz','Cudowna osoba',
-'Çok güzelsin','Çok özelsin','Harika bir ruh','Eşsiz güzellik',
-'Είσαι υπέροχη','Είσαι μοναδική','Όμορφη ψυχή',
-'あなたは素敵','あなたは美しい','特別な人',
-'당신은 아름다워요','당신은 특별해요','아름다운 마음',
-'你很美','你很特别','美丽的灵魂','你的笑容很美',
-'أنتِ رائعة','أنتِ جميلة','روح جميلة',
-'Ты — маленькое чудо','С тобой светлее','Улыбайся чаще','Мир красивее с тобой','В тебе столько света','Твоя доброта бесценна','Ты словно весна','Неповторимая',
-'Ma belle','Mon trésor','Belle comme le jour','Un sourire magnifique',
-'Bella come un sogno','Tesoro prezioso','Luz e beleza','Doce encanto',
-'Kind heart','Lovely smile','Pure magic','A gentle soul','Born to shine','A little wonder',
-'Ты прекрасна во всём','Твоя искренность','Лёгкость и нежность','Удивительная девушка','Волшебство в глазах','Самая тёплая улыбка','Тонкая душевная красота','Ты заслуживаешь лучшего',
-'Ты — вдохновение','Нежность и сила','Твоя магия','Сияй и улыбайся','Красивых тебе мгновений','Пусть сбываются мечты'
-];
-let W=0,H=0,D=1,rows=[],started=0,raf=0;
-function heartPath(cx,cy,rx,ry){
- const p=new Path2D();
- p.moveTo(cx,cy+ry*.94);
- p.bezierCurveTo(cx-rx*1.18,cy+ry*.22,cx-rx*1.12,cy-ry*.72,cx-rx*.55,cy-ry*.83);
- p.bezierCurveTo(cx-rx*.24,cy-ry*.91,cx-rx*.08,cy-ry*.70,cx,cy-ry*.48);
- p.bezierCurveTo(cx+rx*.08,cy-ry*.70,cx+rx*.24,cy-ry*.91,cx+rx*.55,cy-ry*.83);
- p.bezierCurveTo(cx+rx*1.12,cy-ry*.72,cx+rx*1.18,cy+ry*.22,cx,cy+ry*.94);
- p.closePath();return p;
-}
-function setup(){
- const b=canvas.getBoundingClientRect();W=b.width;H=b.height;D=Math.min(devicePixelRatio||1,2);
- canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);
- const rx=Math.min(W*.39,H*.34,310),ry=Math.min(H*.39,rx*1.13),cx=W/2,cy=H*.48;
- const path=heartPath(cx,cy,rx,ry);
- // Rasterize the silhouette once. Each text row uses only the pixels inside the heart.
- const mask=document.createElement('canvas');mask.width=Math.ceil(W);mask.height=Math.ceil(H);
- const m=mask.getContext('2d');m.fillStyle='#fff';m.fill(path);
- const data=m.getImageData(0,0,mask.width,mask.height).data;
- const font=Math.max(8,Math.min(W<520?10.5:12.5,rx/26)),step=font*1.58;
- rows=[];let phraseIndex=0;
- for(let y=Math.floor(cy-ry*.9);y<=Math.ceil(cy+ry*.9);y+=step){
-  let left=-1,right=-1;
-  for(let x=Math.floor(cx-rx*1.2);x<=Math.ceil(cx+rx*1.2);x++){
-   const rowY=Math.min(mask.height-1,Math.max(0,Math.round(y)));
-   const colX=Math.min(mask.width-1,Math.max(0,Math.round(x)));
-   const pos=(rowY*mask.width+colX)*4+3;
-   if(data[pos]>100){if(left<0)left=x;right=x}
-  }
-  if(left>=0&&right-left>font*2.8){
-   rows.push({y,left,right,phrase:phrases[phraseIndex++%phrases.length]});
-  }
- }
- started=performance.now();return{cx,cy,rx,ry,font};
-}
-let shape;
-function draw(now){
- ctx.clearRect(0,0,W,H);
- const elapsed=(now-started)/1000;
- const reveal=Math.min(1,elapsed/7.2);
- // Lines emerge progressively from the upper cleft and spread down into the heart.
- const count=Math.floor(rows.length*reveal);
- const colors=['#ff493d','#ff5b48','#f43b32','#ff765e','#e93632','#ff654f'];
- for(let i=0;i<count;i++){
-  const r=rows[i],span=r.right-r.left;
-  ctx.save();
-  const fade=Math.min(1,(reveal*rows.length-i)/2.4);
-  ctx.globalAlpha=.96*fade;
-  ctx.font=(i%4===0?'700 ':'600 ')+shape.font+'px Manrope,Arial,sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  const phrase=r.phrase+'   ·   ';
-  const measure=ctx.measureText(phrase).width;
-  let line='';
-  while(ctx.measureText(line+phrase).width<span+measure)line+=phrase;
-  ctx.beginPath();ctx.rect(r.left,r.y-shape.font*.72,span,shape.font*1.45);ctx.clip();
-  ctx.fillStyle=colors[i%colors.length];ctx.shadowColor=colors[i%colors.length];ctx.shadowBlur=2;
-  ctx.fillText(line,(r.left+r.right)/2,r.y);
-  ctx.restore();
- }
- raf=requestAnimationFrame(draw);
-}
-function init(){if(raf)cancelAnimationFrame(raf);shape=setup();raf=requestAnimationFrame(draw)}
-if('ResizeObserver'in window)new ResizeObserver(init).observe(canvas);else addEventListener('resize',init);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);
-init();
-})();
-</script>
-</body></html>
+<span class="spark s1">✧</span><span class="spark s2">✦</span><span class="spark s3">✧</span><span class="spark s4">✦</span>
+<svg class="heart" viewBox="0 0 800 720" role="img" aria-label="Сердце из красивых слов на разных языках">
+<defs>
+<linearGradient id="letters" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9baf"/><stop offset=".48" stop-color="#ff456d"/><stop offset="1" stop-color="#ffb2a3"/></linearGradient>
+<filter id="glow" x="-20%" y="-100%" width="140%" height="300%"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="heartClip"><path d="M400 682 C350 634 86 447 86 258 C86 130 183 67 289 91 C344 104 384 145 400 190 C416 145 456 104 511 91 C617 67 714 130 714 258 C714 447 450 634 400 682Z"/></clipPath>
+</defs>
+<path class="heart-shape" d="M400 682 C350 634 86 447 86 258 C86 130 183 67 289 91 C344 104 384 145 400 190 C416 145 456 104 511 91 C617 67 714 130 714 258 C714 447 450 634 400 682Z"/>
+<g clip-path="url(#heartClip)"><text class="word-row" x="400" y="112" text-anchor="middle" style="--i:0;--h:0">ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА</text>
+<text class="word-row" x="400" y="128" text-anchor="middle" style="--i:1;--h:1">YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL</text>
+<text class="word-row" x="400" y="144" text-anchor="middle" style="--i:2;--h:2">TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE</text>
+<text class="word-row" x="400" y="160" text-anchor="middle" style="--i:3;--h:3">SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA   ✦   SEI MERAVIGLIOSA</text>
+<text class="word-row" x="400" y="176" text-anchor="middle" style="--i:4;--h:4">ERES PRECIOSA   ✦   ERES PRECIOSA   ✦   ERES PRECIOSA   ✦   ERES PRECIOSA   ✦   ERES PRECIOSA   ✦   ERES PRECIOSA   ✦   ERES PRECIOSA</text>
+<text class="word-row" x="400" y="192" text-anchor="middle" style="--i:5;--h:5">DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN   ✦   DU BIST WUNDERSCHÖN</text>
+<text class="word-row" x="400" y="208" text-anchor="middle" style="--i:6;--h:0">JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA   ✦   JESTEŚ WYJĄTKOWA</text>
+<text class="word-row" x="400" y="224" text-anchor="middle" style="--i:7;--h:1">あなたは素敵   ✦   あなたは素敵   ✦   あなたは素敵   ✦   あなたは素敵   ✦   あなたは素敵   ✦   あなたは素敵   ✦   あなたは素敵</text>
+<text class="word-row" x="400" y="240" text-anchor="middle" style="--i:8;--h:2">당신은 아름다워요   ✦   당신은 아름다워요   ✦   당신은 아름다워요   ✦   당신은 아름다워요   ✦   당신은 아름다워요   ✦   당신은 아름다워요   ✦   당신은 아름다워요</text>
+<text class="word-row" x="400" y="256" text-anchor="middle" style="--i:9;--h:3">你很特别   ✦   你很特别   ✦   你很特别   ✦   你很特别   ✦   你很特别   ✦   你很特别   ✦   你很特别</text>
+<text class="word-row" x="400" y="272" text-anchor="middle" style="--i:10;--h:4">أنتِ رائعة   ✦   أنتِ رائعة   ✦   أنتِ رائعة   ✦   أنتِ رائعة   ✦   أنتِ رائعة   ✦   أنتِ رائعة   ✦   أنتِ رائعة</text>
+<text class="word-row" x="400" y="288" text-anchor="middle" style="--i:11;--h:5">ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА   ✦   ТВОЯ УЛЫБКА</text>
+<text class="word-row" x="400" y="304" text-anchor="middle" style="--i:12;--h:0">BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL   ✦   BEAUTIFUL SOUL</text>
+<text class="word-row" x="400" y="320" text-anchor="middle" style="--i:13;--h:1">MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL   ✦   MON RAYON DE SOLEIL</text>
+<text class="word-row" x="400" y="336" text-anchor="middle" style="--i:14;--h:2">ANIMA BELLA   ✦   ANIMA BELLA   ✦   ANIMA BELLA   ✦   ANIMA BELLA   ✦   ANIMA BELLA   ✦   ANIMA BELLA   ✦   ANIMA BELLA</text>
+<text class="word-row" x="400" y="352" text-anchor="middle" style="--i:15;--h:3">ALMA BONITA   ✦   ALMA BONITA   ✦   ALMA BONITA   ✦   ALMA BONITA   ✦   ALMA BONITA   ✦   ALMA BONITA   ✦   ALMA BONITA</text>
+<text class="word-row" x="400" y="368" text-anchor="middle" style="--i:16;--h:4">EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN   ✦   EINZIGARTIG SCHÖN</text>
+<text class="word-row" x="400" y="384" text-anchor="middle" style="--i:17;--h:5">PIĘKNA DUSZA   ✦   PIĘKNA DUSZA   ✦   PIĘKNA DUSZA   ✦   PIĘKNA DUSZA   ✦   PIĘKNA DUSZA   ✦   PIĘKNA DUSZA   ✦   PIĘKNA DUSZA</text>
+<text class="word-row" x="400" y="400" text-anchor="middle" style="--i:18;--h:0">あなたは美しい   ✦   あなたは美しい   ✦   あなたは美しい   ✦   あなたは美しい   ✦   あなたは美しい   ✦   あなたは美しい   ✦   あなたは美しい</text>
+<text class="word-row" x="400" y="416" text-anchor="middle" style="--i:19;--h:1">美丽的灵魂   ✦   美丽的灵魂   ✦   美丽的灵魂   ✦   美丽的灵魂   ✦   美丽的灵魂   ✦   美丽的灵魂   ✦   美丽的灵魂</text>
+<text class="word-row" x="400" y="432" text-anchor="middle" style="--i:20;--h:2">ДУША СВЕТА   ✦   ДУША СВЕТА   ✦   ДУША СВЕТА   ✦   ДУША СВЕТА   ✦   ДУША СВЕТА   ✦   ДУША СВЕТА   ✦   ДУША СВЕТА</text>
+<text class="word-row" x="400" y="448" text-anchor="middle" style="--i:21;--h:3">PURE ELEGANCE   ✦   PURE ELEGANCE   ✦   PURE ELEGANCE   ✦   PURE ELEGANCE   ✦   PURE ELEGANCE   ✦   PURE ELEGANCE   ✦   PURE ELEGANCE</text>
+<text class="word-row" x="400" y="464" text-anchor="middle" style="--i:22;--h:4">TENDERNESS   ✦   TENDERNESS   ✦   TENDERNESS   ✦   TENDERNESS   ✦   TENDERNESS   ✦   TENDERNESS   ✦   TENDERNESS</text>
+<text class="word-row" x="400" y="480" text-anchor="middle" style="--i:23;--h:5">НEЖНОСТЬ   ✦   НEЖНОСТЬ   ✦   НEЖНОСТЬ   ✦   НEЖНОСТЬ   ✦   НEЖНОСТЬ   ✦   НEЖНОСТЬ   ✦   НEЖНОСТЬ</text>
+<text class="word-row" x="400" y="496" text-anchor="middle" style="--i:24;--h:0">СИЯЙ   ✦   СИЯЙ   ✦   СИЯЙ   ✦   СИЯЙ   ✦   СИЯЙ   ✦   СИЯЙ   ✦   СИЯЙ</text>
+<text class="word-row" x="400" y="512" text-anchor="middle" style="--i:25;--h:1">YOU ARE UNIQUE   ✦   YOU ARE UNIQUE   ✦   YOU ARE UNIQUE   ✦   YOU ARE UNIQUE   ✦   YOU ARE UNIQUE   ✦   YOU ARE UNIQUE   ✦   YOU ARE UNIQUE</text>
+<text class="word-row" x="400" y="528" text-anchor="middle" style="--i:26;--h:2">BELLE ÂME   ✦   BELLE ÂME   ✦   BELLE ÂME   ✦   BELLE ÂME   ✦   BELLE ÂME   ✦   BELLE ÂME   ✦   BELLE ÂME</text>
+<text class="word-row" x="400" y="544" text-anchor="middle" style="--i:27;--h:3">DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA   ✦   DOLCEZZA INFINITA</text>
+<text class="word-row" x="400" y="560" text-anchor="middle" style="--i:28;--h:4">LUZ DE MI VIDA   ✦   LUZ DE MI VIDA   ✦   LUZ DE MI VIDA   ✦   LUZ DE MI VIDA   ✦   LUZ DE MI VIDA   ✦   LUZ DE MI VIDA   ✦   LUZ DE MI VIDA</text>
+<text class="word-row" x="400" y="576" text-anchor="middle" style="--i:29;--h:5">WUNDERVOLL   ✦   WUNDERVOLL   ✦   WUNDERVOLL   ✦   WUNDERVOLL   ✦   WUNDERVOLL   ✦   WUNDERVOLL   ✦   WUNDERVOLL</text>
+<text class="word-row" x="400" y="592" text-anchor="middle" style="--i:30;--h:0">CUDOWNA OSOBA   ✦   CUDOWNA OSOBA   ✦   CUDOWNA OSOBA   ✦   CUDOWNA OSOBA   ✦   CUDOWNA OSOBA   ✦   CUDOWNA OSOBA   ✦   CUDOWNA OSOBA</text>
+<text class="word-row" x="400" y="608" text-anchor="middle" style="--i:31;--h:1">特別な人   ✦   特別な人   ✦   特別な人   ✦   特別な人   ✦   特別な人   ✦   特別な人   ✦   特別な人</text>
+<text class="word-row" x="400" y="624" text-anchor="middle" style="--i:32;--h:2">당신은 특별해요   ✦   당신은 특별해요   ✦   당신은 특별해요   ✦   당신은 특별해요   ✦   당신은 특별해요   ✦   당신은 특별해요   ✦   당신은 특별해요</text>
+<text class="word-row" x="400" y="640" text-anchor="middle" style="--i:33;--h:3">ابتسامتك جميلة   ✦   ابتسامتك جميلة   ✦   ابتسامتك جميلة   ✦   ابتسامتك جميلة   ✦   ابتسامتك جميلة   ✦   ابتسامتك جميلة   ✦   ابتسامتك جميلة</text>
+<text class="word-row" x="400" y="656" text-anchor="middle" style="--i:34;--h:4">ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ   ✦   ТЫ ОСОБЕННАЯ</text>
+<text class="word-row" x="400" y="672" text-anchor="middle" style="--i:35;--h:5">ONE OF A KIND   ✦   ONE OF A KIND   ✦   ONE OF A KIND   ✦   ONE OF A KIND   ✦   ONE OF A KIND   ✦   ONE OF A KIND   ✦   ONE OF A KIND</text></g>
+</svg>
+<div class="signature">Леночка</div><div class="sub">для тебя · with love</div>
+</main></body></html>
