@@ -74,7 +74,9 @@ function setup(){
  for(let y=Math.floor(cy-ry*.9);y<=Math.ceil(cy+ry*.9);y+=step){
   let left=-1,right=-1;
   for(let x=Math.floor(cx-rx*1.2);x<=Math.ceil(cx+rx*1.2);x++){
-   const pos=(Math.min(mask.height-1,Math.max(0,y))*mask.width+Math.min(mask.width-1,Math.max(0,x)))*4+3;
+   const rowY=Math.min(mask.height-1,Math.max(0,Math.round(y)));
+   const colX=Math.min(mask.width-1,Math.max(0,Math.round(x)));
+   const pos=(rowY*mask.width+colX)*4+3;
    if(data[pos]>100){if(left<0)left=x;right=x}
   }
   if(left>=0&&right-left>font*2.8){
