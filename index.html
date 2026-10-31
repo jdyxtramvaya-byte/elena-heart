@@ -15,7 +15,7 @@ main{height:100svh;min-height:520px;display:flex;flex-direction:column;align-ite
 main:before,main:after{content:"";position:absolute;width:70vmin;height:70vmin;border-radius:50%;filter:blur(90px);opacity:.16;z-index:-1;pointer-events:none}
 main:before{background:#e31d50;left:-30vmin;top:10%}main:after{background:#a10e38;right:-35vmin;bottom:-10%}
 .heart{width:min(96vw,760px);height:auto;max-height:78svh;overflow:visible;filter:drop-shadow(0 0 15px #e52a5638)}
-.heart-shape{fill:#260711;stroke:#f04b70;stroke-opacity:.12;stroke-width:2}
+
 .word-row{font-family:Manrope,Arial,sans-serif;font-size:13px;font-weight:800;letter-spacing:2.2px;fill:url(#letters);opacity:0;filter:url(#glow);animation:appear .7s calc(var(--i)*.105s + .25s) ease-out forwards}
 .word-row:nth-child(3n){font-size:12px;letter-spacing:2.8px}
 .word-row:nth-child(4n){font-size:14px;letter-spacing:1.8px}
@@ -36,7 +36,6 @@ main:before{background:#e31d50;left:-30vmin;top:10%}main:after{background:#a10e3
 <filter id="glow" x="-20%" y="-100%" width="140%" height="300%"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <clipPath id="heartClip"><path d="M400 682 C350 634 86 447 86 258 C86 130 183 67 289 91 C344 104 384 145 400 190 C416 145 456 104 511 91 C617 67 714 130 714 258 C714 447 450 634 400 682Z"/></clipPath>
 </defs>
-<path class="heart-shape" d="M400 682 C350 634 86 447 86 258 C86 130 183 67 289 91 C344 104 384 145 400 190 C416 145 456 104 511 91 C617 67 714 130 714 258 C714 447 450 634 400 682Z"/>
 <g clip-path="url(#heartClip)"><text class="word-row" x="400" y="112" text-anchor="middle" style="--i:0;animation-delay:0.250s">ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА   ✦   ТЫ ПРЕКРАСНА</text>
 <text class="word-row" x="400" y="128" text-anchor="middle" style="--i:1;animation-delay:0.355s">YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL   ✦   YOU ARE BEAUTIFUL</text>
 <text class="word-row" x="400" y="144" text-anchor="middle" style="--i:2;animation-delay:0.460s">TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE   ✦   TU ES MAGNIFIQUE</text>
