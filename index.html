@@ -40,47 +40,56 @@ const phrases=[
 '你很美','你很特别','美丽的灵魂','你的笑容很美',
 'أنتِ رائعة','أنتِ جميلة','روح جميلة','أنتِ مميزة',
 'Ты — маленькое чудо','С тобой светлее','Улыбайся чаще','Мир красивее с тобой','В тебе столько света','Твоя доброта бесценна','Ты словно весна','Неповторимая',
-'Ma belle','Mon trésor','Belle comme le jour','Un sourire magnifique',
-'Bella come un sogno','Tesoro prezioso','Luz e beleza','Doce encanto',
+'Ma belle','Mon trésor','Belle comme le jour','Un sourire magnifique','Bella come un sogno','Tesoro prezioso','Luz e beleza','Doce encanto',
 'Kind heart','Lovely smile','Pure magic','A gentle soul','Born to shine','A little wonder',
 'Ты прекрасна во всём','Твоя искренность','Лёгкость и нежность','Удивительная девушка','Волшебство в глазах','Самая тёплая улыбка','Тонкая душевная красота','Ты заслуживаешь лучшего',
-'Sei un tesoro','Coração bonito','Du bist zauberhaft','You are one of a kind','Ты — вдохновение','Нежность и сила','Твоя магия','Сияй и улыбайся','Красивых тебе мгновений','Пусть сбываются мечты'
+'Ты — вдохновение','Нежность и сила','Твоя магия','Сияй и улыбайся','Красивых тебе мгновений','Пусть сбываются мечты'
 ];
-let rows=[],width=0,height=0,dpr=1,start=0,raf=0;
-const inside=(x,y)=>{const q=x*x+y*y-1;return q*q*q-x*x*y*y*y<=0};
-function build(){
- const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;
- dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
- ctx.setTransform(dpr,0,0,dpr,0,0);
- const size=Math.min(width*.88,height*.78),scale=size/2.25,cx=width/2,cy=height/2-4;
- const font=Math.max(7.2,Math.min(12.5,size/47)),line=font*1.48;rows=[];
- let idx=0;
- for(let y=-1.12;y<=1.12;y+=line/scale){
-  let left=null,right=null;
-  for(let x=-1.28;x<=1.28;x+=.0045){if(inside(x,-y)){if(left===null)left=x;right=x}}
-  if(left!==null&&right!==null){rows.push({x:cx+left*scale,y:cy+y*scale,w:(right-left)*scale,phrase:phrases[idx%phrases.length],index:idx});idx++}
- }
- start=performance.now();
+let w=0,h=0,dpr=1,rows=[],started=0,raf=0;
+function heartPath(cx,cy,hw,hh){
+ const p=new Path2D();
+ p.moveTo(cx,cy+hh*.46);
+ p.bezierCurveTo(cx-hw*.10,cy+hh*.34,cx-hw,cy+hh*.02,cx-hw,cy-hh*.27);
+ p.bezierCurveTo(cx-hw,cy-hh*.67,cx-hw*.38,cy-hh*.79,cx,cy-hh*.40);
+ p.bezierCurveTo(cx+hw*.38,cy-hh*.79,cx+hw,cy-hh*.67,cx+hw,cy-hh*.27);
+ p.bezierCurveTo(cx+hw,cy+hh*.02,cx+hw*.10,cy+hh*.34,cx,cy+hh*.46);
+ p.closePath();return p;
 }
+function setup(){
+ const r=canvas.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+ const mobile=w<520,hw=Math.min(w*.43, h*.34, 330),hh=Math.min(h*.39,hw*1.08);
+ const cx=w/2,cy=h*.49,path=heartPath(cx,cy,hw,hh);
+ const font=Math.max(7,Math.min(mobile?10:12,hw/27)),gap=font*1.55;
+ rows=[];let n=0;
+ for(let y=cy-hh*.77;y<=cy+hh*.45;y+=gap)rows.push({y,phrase:phrases[n++%phrases.length],i:n});
+ started=performance.now();return {cx,cy,hw,hh,path,font};
+}
+let shape;
 function draw(now){
- ctx.clearRect(0,0,width,height);
- const progress=Math.min(1,(now-start)/6500),visible=Math.ceil(rows.length*(1-Math.pow(1-progress,1.35)));
- const size=Math.min(width*.88,height*.78),font=Math.max(7.2,Math.min(12.5,size/47));
- const colors=['#ff5949','#ff7660','#f43d36','#ff9277','#e93632','#ff624f','#d92f2c'];
+ ctx.clearRect(0,0,w,h);
+ const t=Math.min(1,(now-started)/6200),shown=Math.ceil(rows.length*(1-Math.pow(1-t,1.3)));
+ const {cx,cy,hw,hh,path,font}=shape;
+ // A true heart-shaped clipping path: every word stays inside the silhouette.
+ ctx.save();ctx.clip(path);
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ const palette=['#ff5145','#ff7966','#f13b36','#ff9a80','#e93632','#ff6654'];
  rows.forEach((r,i)=>{
-  if(i>=visible)return;
-  ctx.save();ctx.globalAlpha=Math.min(1,(visible-i)/2.5)*.94;
-  ctx.font=(i%5===0?'700':'600')+' '+font+'px Arial, sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=colors[i%7];ctx.shadowBlur=4;ctx.fillStyle=colors[i%7];
-  const repeated=(r.phrase+'   ·   ').repeat(Math.ceil(r.w/(font*3))+2);
-  ctx.beginPath();ctx.rect(r.x,r.y-font*.72,r.w,font*1.45);ctx.clip();
-  ctx.fillText(repeated,r.x+r.w/2,r.y);ctx.restore();
+  if(i>=shown)return;
+  ctx.save();ctx.globalAlpha=.94*Math.min(1,(shown-i)/2.2);
+  ctx.font=(i%4===0?'700':'600')+' '+font+'px Arial,sans-serif';
+  ctx.fillStyle=palette[i%palette.length];ctx.shadowColor=palette[i%palette.length];ctx.shadowBlur=3;
+  const phrase=r.phrase+'   ·   ',repeat=phrase.repeat(Math.ceil((hw*2)/(font*2.5))+4);
+  ctx.fillText(repeat,cx,r.y);ctx.restore();
  });
- if(progress>=1){ctx.save();ctx.globalAlpha=.07+Math.sin(now/850)*.025;ctx.fillStyle='#ff382c';ctx.shadowColor='#ff382c';ctx.shadowBlur=38;ctx.beginPath();ctx.arc(width/2,height/2,Math.min(width,height)*.16*(1+Math.sin(now/850)*.012),0,Math.PI*2);ctx.fill();ctx.restore()}
+ ctx.restore();
+ // Crisp glowing outline makes the heart shape unmistakable.
+ ctx.save();ctx.strokeStyle='#ff594b';ctx.lineWidth=1.5;ctx.globalAlpha=.45+.12*Math.sin(now/650);
+ ctx.shadowColor='#ff3028';ctx.shadowBlur=17;ctx.stroke(path);ctx.restore();
  raf=requestAnimationFrame(draw);
 }
-function init(){if(raf)cancelAnimationFrame(raf);build();raf=requestAnimationFrame(draw)}
-if('ResizeObserver'in window)new ResizeObserver(init).observe(canvas);else window.addEventListener('resize',init);
+function init(){if(raf)cancelAnimationFrame(raf);shape=setup();raf=requestAnimationFrame(draw)}
+if('ResizeObserver'in window)new ResizeObserver(init).observe(canvas);else addEventListener('resize',init);
 init();
 })();
 </script></body></html>
