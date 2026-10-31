@@ -57,7 +57,7 @@ function build(){
  let idx=0;
  for(let y=-1.12;y<=1.12;y+=line/scale){
   let left=null,right=null;
-  for(let x=-1.28;x<=1.28;x+=.0045){if(inside(x,y)){if(left===null)left=x;right=x}}
+  for(let x=-1.28;x<=1.28;x+=.0045){if(inside(x,-y)){if(left===null)left=x;right=x}}
   if(left!==null&&right!==null){rows.push({x:cx+left*scale,y:cy+y*scale,w:(right-left)*scale,phrase:phrases[idx%phrases.length],index:idx});idx++}
  }
  start=performance.now();
