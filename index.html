@@ -1,32 +1,26 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080407">
-<meta name="description" content="Для тебя — Леночка. Много красивых слов на языках мира.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050304">
 <title>Для тебя, Леночка ♥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080407}
-body{font-family:Manrope,Arial,sans-serif;color:#fff}
-main{position:relative;width:100%;height:100svh;min-height:420px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#2a0b16 0%,#160711 38%,#080407 76%)}
-main:before{content:"";position:absolute;width:min(100vw,760px);aspect-ratio:1;border-radius:50%;background:#a51b4520;filter:blur(90px);pointer-events:none}
-canvas{position:relative;z-index:1;width:min(100vw,820px);height:min(92svh,820px);display:block}
-.center-name{position:absolute;z-index:2;left:50%;top:48%;transform:translate(-50%,-50%);white-space:nowrap;font-family:'Marck Script','Brush Script MT',cursive;font-size:clamp(54px,13vw,104px);font-weight:400;line-height:1;color:#fff1f2;text-shadow:0 2px 2px #6d102d,0 0 12px #ff9caf,0 0 32px #f0446b;opacity:0;animation:nameReveal 1.7s 4.9s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:none}
-.caption{position:absolute;z-index:2;bottom:max(24px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:#e9a1b4;opacity:0;animation:captionReveal 1.2s 6.3s ease forwards}
-@keyframes nameReveal{0%{opacity:0;transform:translate(-50%,-43%) scale(.92)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@keyframes captionReveal{to{opacity:.62}}
-@media(max-width:520px){canvas{height:88svh}.caption{font-size:8px;letter-spacing:.25em}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050304}
+body{color:#fff;font-family:Manrope,Arial,sans-serif}
+main{position:relative;width:100%;height:100svh;min-height:420px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#160609 0%,#0b0507 48%,#030203 100%)}
+canvas{display:block;width:min(100vw,900px);height:min(94svh,900px);position:relative;z-index:1}
+.center-name{position:absolute;z-index:2;left:50%;top:49%;transform:translate(-50%,-50%);font-family:'Marck Script','Brush Script MT',cursive;font-size:clamp(48px,12vw,92px);font-weight:400;white-space:nowrap;color:#fff0f1;text-shadow:0 0 9px #ff718b,0 0 24px #d9214d;opacity:0;animation:nameIn 1.5s 7s ease forwards;pointer-events:none}
+.caption{position:absolute;z-index:2;bottom:max(24px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:#bd6c7c;font-size:9px;letter-spacing:.38em;text-transform:uppercase;opacity:0;animation:captionIn 1.2s 8s ease forwards}
+@keyframes nameIn{to{opacity:1}}@keyframes captionIn{to{opacity:.55}}
+@media(max-width:520px){canvas{width:100vw;height:88svh}.caption{font-size:8px;letter-spacing:.28em}}
 @media(prefers-reduced-motion:reduce){.center-name,.caption{animation:none;opacity:1}}
 </style>
 </head>
-<body>
-<main>
-<canvas id="heart" aria-label="Большое сердце из слов на разных языках"></canvas>
+<body><main>
+<canvas id="heart" aria-label="Сердце, составленное из строк с красивыми словами"></canvas>
 <div class="center-name">Леночка</div>
 <div class="caption">для тебя</div>
 </main>
@@ -34,62 +28,84 @@ canvas{position:relative;z-index:1;width:min(100vw,820px);height:min(92svh,820px
 (()=>{
 'use strict';
 const canvas=document.getElementById('heart'),ctx=canvas.getContext('2d');
-const words=[
-'Ты прекрасна','Ты особенная','Твоя улыбка','Нежная душа','Ты сияешь','Ты чудесная','Ты вдохновляешь','Ты неповторимая','Ты очаровательна','Ты бесценна','Ты — радость','Ты — свет',
-'You are lovely','Beautiful soul','You are amazing','One of a kind','You are sunshine','Simply beautiful','So precious','Shine bright','Pure magic','Lovely smile',
-'Tu es magnifique','Tu es unique','Belle âme','Mon rayon de soleil','Sei meravigliosa','Anima bella','Eres preciosa','Alma bonita','Du bist wunderbar','Wunderschön',
-'Você é especial','Alma linda','Jesteś piękna','Piękna dusza','Çok güzelsin','Είσαι υπέροχη','あなたは素敵','당신은 아름다워요','你很美','أنتِ رائعة',
-'С тобой светлее','В тебе столько света','Твоя доброта','Тепло твоего сердца','Красота внутри и снаружи','Ты словно весна','Волшебство в глазах','Улыбайся чаще','Ты заслуживаешь счастья',
-'Kind heart','Endless charm','Gentle beauty','A little wonder','Mon trésor','Dolcezza infinita','Eres maravillosa','Du bist einzigartig','笑顔がすてき','美丽的灵魂'
+const phrases=[
+'Ты прекрасна','Твоя улыбка','Нежность души','Ты особенная','Свет внутри тебя','Ты восхитительна','Красота в деталях','Ты достойна счастья','Твоё очарование','Ты вдохновляешь','Тепло твоего сердца','Оставайся собой',
+'You are beautiful','You are amazing','Beautiful soul','You are sunshine','Simply wonderful','One of a kind','Pure elegance','Endless charm','You are precious','Shine bright','So lovely','You make life brighter',
+'Tu es magnifique','Tu es merveilleuse','Belle âme','Mon rayon de soleil','Pleine de douceur','Tu es unique','Quelle beauté','Un vrai trésor',
+'Sei meravigliosa','Sei speciale','Anima bella','Dolcezza infinita','Sei splendida','Unica al mondo','Pura bellezza',
+'Eres preciosa','Eres maravillosa','Alma bonita','Eres única','Mucho encanto','Luz de mi vida','Qué bonita',
+'Du bist wunderschön','Du bist besonders','Wundervolle Seele','Einzigartig schön','Voller Zauber',
+'Você é maravilhosa','Você é especial','Alma linda','Muito encanto','Você é única',
+'Jesteś piękna','Jesteś wyjątkowa','Piękna dusza','Promieniejesz','Cudowna osoba',
+'Çok güzelsin','Çok özelsin','Harika bir ruh','Eşsiz güzellik',
+'Είσαι υπέροχη','Είσαι μοναδική','Όμορφη ψυχή',
+'あなたは素敵','あなたは美しい','特別な人',
+'당신은 아름다워요','당신은 특별해요','아름다운 마음',
+'你很美','你很特别','美丽的灵魂','你的笑容很美',
+'أنتِ رائعة','أنتِ جميلة','روح جميلة',
+'Ты — маленькое чудо','С тобой светлее','Улыбайся чаще','Мир красивее с тобой','В тебе столько света','Твоя доброта бесценна','Ты словно весна','Неповторимая',
+'Ma belle','Mon trésor','Belle comme le jour','Un sourire magnifique',
+'Bella come un sogno','Tesoro prezioso','Luz e beleza','Doce encanto',
+'Kind heart','Lovely smile','Pure magic','A gentle soul','Born to shine','A little wonder',
+'Ты прекрасна во всём','Твоя искренность','Лёгкость и нежность','Удивительная девушка','Волшебство в глазах','Самая тёплая улыбка','Тонкая душевная красота','Ты заслуживаешь лучшего',
+'Ты — вдохновение','Нежность и сила','Твоя магия','Сияй и улыбайся','Красивых тебе мгновений','Пусть сбываются мечты'
 ];
-let W=0,H=0,D=1,rows=[],started=0,raf=0,shape;
-function makeHeart(cx,cy,rx,ry){
+let W=0,H=0,D=1,rows=[],started=0,raf=0;
+function heartPath(cx,cy,rx,ry){
  const p=new Path2D();
- p.moveTo(cx,cy+ry*.88);
- p.bezierCurveTo(cx-rx*.10,cy+ry*.62,cx-rx,cy+ry*.08,cx-rx,cy-ry*.34);
- p.bezierCurveTo(cx-rx,cy-ry*.83,cx-rx*.39,cy-ry*.98,cx,cy-ry*.56);
- p.bezierCurveTo(cx+rx*.39,cy-ry*.98,cx+rx,cy-ry*.83,cx+rx,cy-ry*.34);
- p.bezierCurveTo(cx+rx,cy+ry*.08,cx+rx*.10,cy+ry*.62,cx,cy+ry*.88);
+ p.moveTo(cx,cy+ry*.94);
+ p.bezierCurveTo(cx-rx*1.18,cy+ry*.22,cx-rx*1.12,cy-ry*.72,cx-rx*.55,cy-ry*.83);
+ p.bezierCurveTo(cx-rx*.24,cy-ry*.91,cx-rx*.08,cy-ry*.70,cx,cy-ry*.48);
+ p.bezierCurveTo(cx+rx*.08,cy-ry*.70,cx+rx*.24,cy-ry*.91,cx+rx*.55,cy-ry*.83);
+ p.bezierCurveTo(cx+rx*1.12,cy-ry*.72,cx+rx*1.18,cy+ry*.22,cx,cy+ry*.94);
  p.closePath();return p;
 }
 function setup(){
  const b=canvas.getBoundingClientRect();W=b.width;H=b.height;D=Math.min(devicePixelRatio||1,2);
  canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);
- const rx=Math.min(W*.44,H*.37,340),ry=Math.min(H*.40,rx*1.08),cx=W/2,cy=H*.48;
- const path=makeHeart(cx,cy,rx,ry),font=Math.max(8,Math.min(W<520?11:13,rx/25)),step=font*1.62;
- rows=[];
- let k=0;
- for(let y=cy-ry*.91;y<=cy+ry*.84;y+=step){
-  let left=W,right=0;
-  for(let x=cx-rx;x<=cx+rx;x+=2){if(ctx.isPointInPath(path,x,y)){left=Math.min(left,x);right=Math.max(right,x)}}
-  if(right>left+font*3)rows.push({y,left,right,phrase:words[k++%words.length]});
+ const rx=Math.min(W*.39,H*.34,310),ry=Math.min(H*.39,rx*1.13),cx=W/2,cy=H*.48;
+ const path=heartPath(cx,cy,rx,ry);
+ // Rasterize the silhouette once. Each text row uses only the pixels inside the heart.
+ const mask=document.createElement('canvas');mask.width=Math.ceil(W);mask.height=Math.ceil(H);
+ const m=mask.getContext('2d');m.fillStyle='#fff';m.fill(path);
+ const data=m.getImageData(0,0,mask.width,mask.height).data;
+ const font=Math.max(8,Math.min(W<520?10.5:12.5,rx/26)),step=font*1.58;
+ rows=[];let phraseIndex=0;
+ for(let y=Math.floor(cy-ry*.9);y<=Math.ceil(cy+ry*.9);y+=step){
+  let left=-1,right=-1;
+  for(let x=Math.floor(cx-rx*1.2);x<=Math.ceil(cx+rx*1.2);x++){
+   const pos=(Math.min(mask.height-1,Math.max(0,y))*mask.width+Math.min(mask.width-1,Math.max(0,x)))*4+3;
+   if(data[pos]>100){if(left<0)left=x;right=x}
+  }
+  if(left>=0&&right-left>font*2.8){
+   rows.push({y,left,right,phrase:phrases[phraseIndex++%phrases.length]});
+  }
  }
- started=performance.now();return{path,cx,cy,rx,ry,font};
+ started=performance.now();return{cx,cy,rx,ry,font};
 }
+let shape;
 function draw(now){
  ctx.clearRect(0,0,W,H);
- const t=Math.min(1,(now-started)/5200);
- const total=rows.length,order=rows.map((_,i)=>i).sort((a,b)=>Math.abs(a-(total-1)/2)-Math.abs(b-(total-1)/2));
- const count=Math.ceil(total*(1-Math.pow(1-t,1.45)));
- const palette=['#ff6685','#ff8ca0','#f64d72','#ffb0b8','#e94a68','#ff7892'];
- ctx.save();ctx.shadowColor='#f52f62';ctx.shadowBlur=12;ctx.strokeStyle='#ff7996';ctx.globalAlpha=.34;ctx.lineWidth=1.2;ctx.stroke(shape.path);ctx.restore();
- for(let n=0;n<count;n++){
-  const i=order[n],r=rows[i],span=r.right-r.left;
-  const delay=Math.max(0,1-(count-n)/2);
-  ctx.save();ctx.globalAlpha=.94*(1-delay*.45);
-  ctx.font=(i%5===0?'700 ':'600 ')+shape.font+'px Manrope,Arial,sans-serif';
+ const elapsed=(now-started)/1000;
+ const reveal=Math.min(1,elapsed/7.2);
+ // Lines emerge progressively from the upper cleft and spread down into the heart.
+ const count=Math.floor(rows.length*reveal);
+ const colors=['#ff493d','#ff5b48','#f43b32','#ff765e','#e93632','#ff654f'];
+ for(let i=0;i<count;i++){
+  const r=rows[i],span=r.right-r.left;
+  ctx.save();
+  const fade=Math.min(1,(reveal*rows.length-i)/2.4);
+  ctx.globalAlpha=.96*fade;
+  ctx.font=(i%4===0?'700 ':'600 ')+shape.font+'px Manrope,Arial,sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  const unit=r.phrase+'   ·   ',repeat=unit.repeat(Math.ceil(span/(shape.font*2.7))+3);
-  ctx.fillStyle=palette[i%palette.length];ctx.shadowColor=palette[i%palette.length];ctx.shadowBlur=2.2;
-  ctx.beginPath();ctx.rect(r.left,r.y-shape.font*.8,span,shape.font*1.6);ctx.clip();
-  ctx.fillText(repeat,(r.left+r.right)/2,r.y);
+  const phrase=r.phrase+'   ·   ';
+  const measure=ctx.measureText(phrase).width;
+  let line='';
+  while(ctx.measureText(line+phrase).width<span+measure)line+=phrase;
+  ctx.beginPath();ctx.rect(r.left,r.y-shape.font*.72,span,shape.font*1.45);ctx.clip();
+  ctx.fillStyle=colors[i%colors.length];ctx.shadowColor=colors[i%colors.length];ctx.shadowBlur=2;
+  ctx.fillText(line,(r.left+r.right)/2,r.y);
   ctx.restore();
- }
- if(t>=1){
-  const pulse=1+Math.sin(now/1100)*.009;
-  ctx.save();ctx.translate(shape.cx,shape.cy);ctx.scale(pulse,pulse);ctx.translate(-shape.cx,-shape.cy);
-  ctx.globalAlpha=.045;ctx.fillStyle='#ff456f';ctx.shadowColor='#ff456f';ctx.shadowBlur=36;
-  ctx.fill(shape.path);ctx.restore();
  }
  raf=requestAnimationFrame(draw);
 }
@@ -99,5 +115,4 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);
 init();
 })();
 </script>
-</body>
-</html>
+</body></html>
